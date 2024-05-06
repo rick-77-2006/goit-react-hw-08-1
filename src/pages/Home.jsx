@@ -7,7 +7,7 @@ const Home = () => {
   
   return (
     <>
-      <DocumentTitle>Home</DocumentTitle>
+      <DocumentTitle>React + Vite by Rick</DocumentTitle>
       <div className={css.container}>
         <img src="https://media.tenor.com/IrND-vYTCWoAAAAi/cellphone-chill.gif" alt="Phone gif" className={css.gif} />
         <h1 className={css.title}>
