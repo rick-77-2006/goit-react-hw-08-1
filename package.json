@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mui/material": "^5.15.16",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@reduxjs/toolkit": "^2.2.3",
     "axios": "^1.6.8",
     "clsx": "^2.1.0",
-    "formik": "^2.4.5",
+    "formik": "^2.4.6",
     "modern-normalize": "^2.0.0",
     "notiflix": "^3.2.7",
     "react": "^18.2.0",
@@ -28,6 +30,7 @@
     "react-toastify": "^10.0.5",
     "redux": "^5.0.1",
     "redux-persist": "^6.0.0",
+    "styled-components": "^6.1.9",
     "yup": "^1.4.0"
   },
   "devDependencies": {
