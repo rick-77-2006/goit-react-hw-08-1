@@ -1,7 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from "axios";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-axios.defaults.baseURL = "https://660453002393662c31d12ce9.mockapi.io";
+//axios.defaults.baseURL = "https://connections-api.herokuapp.com";
 
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchAll',
@@ -10,6 +11,7 @@ export const fetchContacts = createAsyncThunk(
       const response = await axios.get('/contacts');
       return response.data;
     } catch (e) {
+      Notify.error('Oops. Something is wrong. Please try again!');
       return thunkAPI.rejectWithValue(e.message);
     }
   }
@@ -20,8 +22,10 @@ export const addContact = createAsyncThunk(
   async ({ name, number }, thunkAPI) => {
     try {
       const response = await axios.post('/contacts', { name, number });
+      Notify.success(`${name} is added to the contact list!`);
       return response.data;
     } catch (e) {
+       Notify.error('Oops. Something is wrong. Please try again!');
       return thunkAPI.rejectWithValue(e.message);
     }
   }
@@ -38,3 +42,21 @@ export const deleteContact = createAsyncThunk(
     }
   }
 );
+
+export const updateContact = createAsyncThunk(
+  'contacts/updateContact',
+  async (credentials, thunkAPI) => {
+    const contactId = credentials.id;
+    try {
+      const response = await axios.patch(`/contacts/${contactId}`, {
+        name: credentials.name,
+        number: credentials.number,
+      });
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+

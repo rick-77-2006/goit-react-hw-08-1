@@ -1,29 +1,27 @@
-import DocumentTitle from '../components/DocumentTitle';
+import { DocumentTitle } from '../components/DocumentTitle';
+import css from './Pages.module.css';
+import { NavLink } from 'react-router-dom';
 
-const styles = {
-  container: {
-    minHeight: 'calc(100vh - 50px)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontWeight: 500,
-    fontSize: 48,
-    textAlign: 'center',
-  },
-};
-
-export default function Home() {
+const Home = () => {
+ 
+  
   return (
     <>
       <DocumentTitle>Home</DocumentTitle>
-
-      <div style={styles.container}>
-        <h1 style={styles.title}>
-          Task manager welcome page
+      <div className={css.container}>
+        <img src="https://media.tenor.com/IrND-vYTCWoAAAAi/cellphone-chill.gif" alt="Phone gif" className={css.gif} />
+        <h1 className={css.title}>
+          Contacts manager welcome page
         </h1>
+       
+          <p className={css.link}>Do you want to <NavLink to="/register" className={css.span}>Register</NavLink> or <NavLink to="/login" className={css.span}>Log In</NavLink> ?</p>
+     
       </div>
     </>
   );
 }
+
+export default Home;
+
+
+
