@@ -1,27 +1,31 @@
-import { NavLink } from 'react-router-dom';
-import { useAuth } from '../../hooks/useAuth';
-import clsx from 'clsx';
-import css from './Navigation.module.css';
+import { useAuth } from 'hooks/useAuth';
+import {
+  Logo,
+  MainNav,
+  MainNavItem,
+  MainNavLink,
+  MainNavList,
+} from './Navigation.module';
 
-const buildLinkClass = ({ isActive }) => {
-  return clsx(css.nav, isActive && css.active);
+const Navigation = () => {
+  const { isLoggedIn } = useAuth();
+
+  return (
+    <>
+      <Logo to="/">
+        Phone<span>Book.</span>
+      </Logo>
+      <MainNav>
+        {isLoggedIn && (
+          <MainNavList>
+            <MainNavItem>
+              <MainNavLink to="/contacts">Contacts</MainNavLink>
+            </MainNavItem>
+          </MainNavList>
+        )}
+      </MainNav>
+    </>
+  );
 };
 
-export const Navigation = () => {
-    const { isLoggedIn } = useAuth();
-
-    return (
-    <nav className={css.navigation}>
-      <NavLink  className={buildLinkClass} to="/">
-        Home
-      </NavLink>
-      {isLoggedIn && (
-        <NavLink className={buildLinkClass} to="/contacts">
-          Contacts
-        </NavLink>
-      )}
-    </nav>
-  );
-    
-}
-
+export default Navigation;
