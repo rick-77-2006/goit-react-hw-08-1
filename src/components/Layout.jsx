@@ -1,16 +1,22 @@
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
-import AppBar from './AppBar/AppBar';
+import { AppBar } from './AppBar/AppBar';
 
-const Layout = () => {
-  return (
-    <>
-      <AppBar />
-      <Suspense fallback={null}>
-        <Outlet />
-      </Suspense>
-    </>
-  );
+const styles ={
+    maxWidth: '900px',
+    margin: '0 auto', 
+    padding: '0 16px',
+   
+}
+
+export const Layout = ({children}) => {
+    return (
+        <div style={styles}>
+            <AppBar />
+            <Suspense fallback={null}>
+                {children}
+            </Suspense>
+        </div>
+    );
 };
 
-export default Layout;
+

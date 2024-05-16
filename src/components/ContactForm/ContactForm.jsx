@@ -1,79 +1,59 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../../redux/contacts/operations';
+import css from './ContactForm.module.css';
 
-import PropTypes from 'prop-types';
-
-import { selectContactsList } from 'redux/constacts/selectors';
-import { addContact } from 'redux/constacts/operations';
-
-import { Form, Input, Label, Button, AddUserIcon } from './ContactForm.module';
-import { Notify } from 'notiflix';
-
-export const ContactForm = ({ onCloseModal }) => {
+export const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(selectContactsList);
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const initialValues = {
+    name: '',
+    number: ''
+  };
 
-    const form = e.target;
-    const formName = e.target.elements.name.value;
-    const formNumber = e.target.elements.number.value;
-    if (contacts.some(({ name }) => name === formName)) {
-      return alert(`${formName} is already in contacts`);
-    }
+  const contactSchema = Yup.object().shape({
+    name: Yup.string()
+      .required('Name is required')
+      .trim()
+      .min(3, 'Must be at least 3 characters')
+      .max(20, 'Must be 20 characters or less'),
+    number: Yup.string()
+      .required('Phone number is required')
+      .trim()
+       .min(3, 'Must be at least 3 characters')
+      .max(20, 'Must be 20 characters or less'),
+  });
 
-    if (contacts.some(({ number }) => number === formNumber)) {
-      return alert(`${formNumber} is already in contacts`);
-    }
-
-    dispatch(addContact({ name: formName, number: formNumber.toString() }))
-      .unwrap()
-      .then(originalPromiseResult => {
-        Notify.success(
-          `${originalPromiseResult.name} successfully added to contacts`
-        );
-      })
-      .catch(() => {
-        Notify.failure("Sorry, something's wrong");
-      });
-
-    onCloseModal();
-    form.reset();
+  const handleSubmit = (values, { resetForm }) => {
+    dispatch(addContact(values));
+    resetForm();
   };
 
   return (
-    <Form onSubmit={handleSubmit} autoComplete="off">
-      <Label>
-        Name
-        <Input
-          type="text"
-          name="name"
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-          required
-          placeholder="Enter name ..."
-          value={contacts.name}
-        />
-      </Label>
-      <Label>
-        Number
-        <Input
-          type="tel"
-          name="number"
-          pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          placeholder="Enter number ..."
-          value={contacts.number}
-        />
-      </Label>
-      <Button type="submit">
-        <AddUserIcon />
-        New contact
-      </Button>
-    </Form>
+    <>
+      <h1 className={css.title}>PHONEBOOK</h1>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={contactSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form className={css.form}>
+          <div className={css.container}>
+            <Field type="text" name="name" placeholder="Name" className={css.file} />
+            <ErrorMessage name="name" component="div" className={css.error} />
+          </div>
+          <div className={css.container}>
+            <Field type="text" name="number" placeholder="Phone Number" className={css.file} />
+            <ErrorMessage name="number" component="div" className={css.error} />
+          </div>
+          <button type="submit" className={css.btn}>Add Contact</button>
+        </Form>
+      </Formik>
+   </>
   );
 };
 
-ContactForm.propTypes = {
-  onCloseModal: PropTypes.func.isRequired,
-};
+
+
+
